@@ -1,0 +1,390 @@
+@page "/cliente"
+@rendermode InteractiveServer
+@inject HttpClient Http
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>Administración de Clientes</PageTitle>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="text-primary fw-bold">Administración de Clientes</h3>
+        <button class="btn btn-success" @onclick="AbrirModalNuevo">
+            + Nuevo Cliente
+        </button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(mensajeError))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @mensajeError
+            <button type="button" class="btn-close" @onclick="() => mensajeError = null"></button>
+        </div>
+    }
+
+    @if (clientes == null)
+    {
+        <div class="text-center my-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando registros...</span>
+            </div>
+            <p class="mt-2 text-muted">Cargando registros...</p>
+        </div>
+    }
+    else if (!clientes.Any())
+    {
+        <div class="alert alert-info text-center">No existen clientes registrados actualmente.</div>
+    }
+    else
+    {
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>CUI</th>
+                        <th>NIT</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th class="text-center" style="width: 180px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in ClientesPaginados)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@c.Cui</td>
+                            <td>@c.Nit</td>
+                            <td>@c.Nombres</td>
+                            <td>@c.Apellidos</td>
+                            <td>@(string.IsNullOrWhiteSpace(c.Direccion) ? "—" : c.Direccion)</td>
+                            <td>@(string.IsNullOrWhiteSpace(c.Telefono) ? "—" : c.Telefono)</td>
+                            <td>@(c.Fecha_Nacimiento.HasValue ? c.Fecha_Nacimiento.Value.ToString("dd/MM/yyyy") : "—")</td>
+                            <td class="text-center">
+                                <button class="btn btn-warning btn-sm me-1" @onclick="() => AbrirModalEditar(c)">
+                                    Editar
+                                </button>
+                                <button class="btn btn-danger btn-sm" @onclick="() => AbrirModalEliminar(c)">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (TotalPaginas > 1)
+        {
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <small class="text-muted">
+                    Página @paginaActual de @TotalPaginas (Total: @clientes.Count registros)
+                </small>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item @(paginaActual == 1 ? "disabled" : "")">
+                            <button class="page-link" @onclick="() => CambiarPagina(paginaActual - 1)">Anterior</button>
+                        </li>
+                        @for (int i = 1; i <= TotalPaginas; i++)
+                        {
+                            int numPag = i;
+                            <li class="page-item @(paginaActual == numPag ? "active" : "")">
+                                <button class="page-link" @onclick="() => CambiarPagina(numPag)">@numPag</button>
+                            </li>
+                        }
+                        <li class="page-item @(paginaActual == TotalPaginas ? "disabled" : "")">
+                            <button class="page-link" @onclick="() => CambiarPagina(paginaActual + 1)">Siguiente</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    }
+</div>
+
+@if (mostrarModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow border-0">
+                <div class="modal-header @(esEdicion ? "bg-warning text-dark" : "bg-primary text-white")">
+                    <h5 class="modal-title fw-bold">
+                        @(esEdicion ? "Modificar Cliente" : "Registrar Nuevo Cliente")
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                </div>
+                <EditForm Model="clienteActual" OnValidSubmit="GuardarCliente">
+                    <DataAnnotationsValidator />
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">CUI (13 dígitos numéricos) *</label>
+                                <InputText @bind-Value="clienteActual.Cui" class="form-control" maxlength="13" placeholder="Ej. 2999123450101" />
+                                <ValidationMessage For="@(() => clienteActual.Cui)" class="text-danger small" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">NIT *</label>
+                                <InputText @bind-Value="clienteActual.Nit" class="form-control" maxlength="15" placeholder="Ej. 1234567-8" />
+                                <ValidationMessage For="@(() => clienteActual.Nit)" class="text-danger small" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nombres *</label>
+                                <InputText @bind-Value="clienteActual.Nombres" class="form-control" maxlength="100" placeholder="Nombres del cliente" />
+                                <ValidationMessage For="@(() => clienteActual.Nombres)" class="text-danger small" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Apellidos *</label>
+                                <InputText @bind-Value="clienteActual.Apellidos" class="form-control" maxlength="100" placeholder="Apellidos del cliente" />
+                                <ValidationMessage For="@(() => clienteActual.Apellidos)" class="text-danger small" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Teléfono</label>
+                                <InputText @bind-Value="clienteActual.Telefono" class="form-control" maxlength="20" placeholder="Ej. 55551234" />
+                                <ValidationMessage For="@(() => clienteActual.Telefono)" class="text-danger small" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fecha de Nacimiento</label>
+                                <InputDate @bind-Value="clienteActual.Fecha_Nacimiento" class="form-control" />
+                                <ValidationMessage For="@(() => clienteActual.Fecha_Nacimiento)" class="text-danger small" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Dirección</label>
+                                <InputText @bind-Value="clienteActual.Direccion" class="form-control" maxlength="200" placeholder="Zona, calle, ciudad..." />
+                                <ValidationMessage For="@(() => clienteActual.Direccion)" class="text-danger small" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                        <button type="submit" class="btn @(esEdicion ? "btn-warning" : "btn-primary") px-4">
+                            @(esEdicion ? "Actualizar" : "Guardar")
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+@if (mostrarModalEliminar)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow border-danger">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="() => mostrarModalEliminar = false"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <p class="fs-5 mb-1">¿Deseas eliminar al cliente?</p>
+                    <p class="fw-bold text-dark fs-6 mb-0">@clienteAEliminar?.Nombres @clienteAEliminar?.Apellidos</p>
+                    <small class="text-muted">NIT: @clienteAEliminar?.Nit | CUI: @clienteAEliminar?.Cui</small>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary px-4" @onclick="() => mostrarModalEliminar = false">No, cancelar</button>
+                    <button type="button" class="btn btn-danger px-4" @onclick="ConfirmarEliminacion">Sí, eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<ClienteDto>? clientes;
+    private ClienteDto clienteActual = new();
+    private ClienteDto? clienteAEliminar;
+
+    private bool mostrarModal = false;
+    private bool mostrarModalEliminar = false;
+    private bool esEdicion = false;
+    private string? mensajeError;
+
+    private int paginaActual = 1;
+    private int registrosPorPagina = 5;
+
+    private int TotalPaginas => clientes == null || !clientes.Any()
+        ? 1
+        : (int)Math.Ceiling((double)clientes.Count / registrosPorPagina);
+
+    private IEnumerable<ClienteDto> ClientesPaginados =>
+        clientes?
+            .Skip((paginaActual - 1) * registrosPorPagina)
+            .Take(registrosPorPagina)
+        ?? Enumerable.Empty<ClienteDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarClientes();
+    }
+
+    private async Task CargarClientes()
+    {
+        try
+        {
+            mensajeError = null;
+            clientes = await Http.GetFromJsonAsync<List<ClienteDto>>("api/Clientes");
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error al obtener datos del API: {ex.Message}";
+        }
+    }
+
+    private void AbrirModalNuevo()
+    {
+        clienteActual = new ClienteDto();
+        esEdicion = false;
+        mostrarModal = true;
+    }
+
+    private void AbrirModalEditar(ClienteDto c)
+    {
+        clienteActual = new ClienteDto
+        {
+            Id_cliente = c.Id_cliente,
+            Cui = c.Cui,
+            Nit = c.Nit,
+            Nombres = c.Nombres,
+            Apellidos = c.Apellidos,
+            Direccion = c.Direccion,
+            Telefono = c.Telefono,
+            Fecha_Nacimiento = c.Fecha_Nacimiento
+        };
+        esEdicion = true;
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+    }
+
+    private async Task GuardarCliente()
+    {
+        try
+        {
+            if (esEdicion)
+            {
+                var response = await Http.PutAsJsonAsync($"api/Clientes/{clienteActual.Id_cliente}", clienteActual);
+                if (response.IsSuccessStatusCode)
+                {
+                    await CargarClientes();
+                    mostrarModal = false;
+                }
+                else
+                {
+                    var errorDetalle = await response.Content.ReadAsStringAsync();
+                    mensajeError = $"No se pudo actualizar el registro: {errorDetalle}";
+                }
+            }
+            else
+            {
+                var response = await Http.PostAsJsonAsync("api/Clientes", clienteActual);
+                if (response.IsSuccessStatusCode)
+                {
+                    await CargarClientes();
+                    mostrarModal = false;
+                }
+                else
+                {
+                    var errorDetalle = await response.Content.ReadAsStringAsync();
+                    mensajeError = $"No se pudo registrar el cliente: {errorDetalle}";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error de comunicación: {ex.Message}";
+        }
+    }
+
+    private void AbrirModalEliminar(ClienteDto c)
+    {
+        clienteAEliminar = c;
+        mostrarModalEliminar = true;
+    }
+
+    private async Task ConfirmarEliminacion()
+    {
+        if (clienteAEliminar == null) return;
+
+        try
+        {
+            var response = await Http.DeleteAsync($"api/Clientes/{clienteAEliminar.Id_cliente}");
+            if (response.IsSuccessStatusCode)
+            {
+                mostrarModalEliminar = false;
+                clienteAEliminar = null;
+                await CargarClientes();
+
+                if (paginaActual > TotalPaginas && TotalPaginas > 0)
+                {
+                    paginaActual = TotalPaginas;
+                }
+            }
+            else
+            {
+                mensajeError = "No fue posible eliminar el registro en el servidor.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error de conexión al eliminar: {ex.Message}";
+        }
+    }
+
+    private void CambiarPagina(int pagina)
+    {
+        if (pagina >= 1 && pagina <= TotalPaginas)
+        {
+            paginaActual = pagina;
+        }
+    }
+
+    public class ClienteDto
+    {
+        public int Id_cliente { get; set; }
+
+        [Required(ErrorMessage = "El CUI es requerido.")]
+        [RegularExpression(@"^[0-9]{13}$", ErrorMessage = "El CUI debe consistir en 13 números exactos.")]
+        public string Cui { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El NIT es requerido.")]
+        [StringLength(15, MinimumLength = 1, ErrorMessage = "El NIT debe tener entre 1 y 15 caracteres.")]
+        public string Nit { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Los nombres son requeridos.")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Debe tener entre 2 y 100 caracteres.")]
+        public string Nombres { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Los apellidos son requeridos.")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Debe tener entre 2 y 100 caracteres.")]
+        public string Apellidos { get; set; } = string.Empty;
+
+        [StringLength(200, ErrorMessage = "Máximo 200 caracteres.")]
+        public string? Direccion { get; set; }
+
+        [RegularExpression(@"^[0-9+ -]{7,20}$", ErrorMessage = "Formato no válido (solo números, guiones, mínimo 7 dígitos).")]
+        public string? Telefono { get; set; }
+
+        [CustomValidation(typeof(ClienteDto), nameof(ValidarFechaNacimiento))]
+        public DateTime? Fecha_Nacimiento { get; set; }
+
+        public static ValidationResult? ValidarFechaNacimiento(DateTime? fecha, ValidationContext context)
+        {
+            if (fecha.HasValue)
+            {
+                if (fecha.Value > DateTime.Today)
+                {
+                    return new ValidationResult("La fecha de nacimiento no puede ser una fecha futura.");
+                }
+                if (fecha.Value < new DateTime(1900, 1, 1))
+                {
+                    return new ValidationResult("La fecha no puede ser anterior al año 1900.");
+                }
+            }
+            return ValidationResult.Success;
+        }
+    }
+}
