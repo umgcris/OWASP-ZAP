@@ -50,11 +50,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sotop\\OneDrive\\Escritorio\\TAREA BLAZOR\\WebEmpresa\\WebEmpresa.csproj",
+      "projectUniqueName": "C:\\Users\\sotop\\Downloads\\WebEmpresa_corregido\\WebEmpresa\\WebEmpresa.csproj",
       "projectName": "WebEmpresa",
-      "projectPath": "C:\\Users\\sotop\\OneDrive\\Escritorio\\TAREA BLAZOR\\WebEmpresa\\WebEmpresa.csproj",
+      "projectPath": "C:\\Users\\sotop\\Downloads\\WebEmpresa_corregido\\WebEmpresa\\WebEmpresa.csproj",
       "packagesPath": "C:\\Users\\sotop\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sotop\\OneDrive\\Escritorio\\TAREA BLAZOR\\WebEmpresa\\obj\\",
+      "outputPath": "C:\\Users\\sotop\\Downloads\\WebEmpresa_corregido\\WebEmpresa\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\sotop\\AppData\\Roaming\\NuGet\\NuGet.Config"

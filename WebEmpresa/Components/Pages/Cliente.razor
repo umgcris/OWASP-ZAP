@@ -47,7 +47,7 @@
                         <th>Dirección</th>
                         <th>Teléfono</th>
                         <th>Fecha de Nacimiento</th>
-                        <th class="text-center" style="width: 180px;">Acciones</th>
+                        <th class="text-center col-acciones">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,7 +105,7 @@
 
 @if (mostrarModal)
 {
-    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content shadow border-0">
                 <div class="modal-header @(esEdicion ? "bg-warning text-dark" : "bg-primary text-white")">
@@ -169,7 +169,7 @@
 
 @if (mostrarModalEliminar)
 {
-    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal fade show d-block modal-backdrop-custom" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content shadow border-danger">
                 <div class="modal-header bg-danger text-white">

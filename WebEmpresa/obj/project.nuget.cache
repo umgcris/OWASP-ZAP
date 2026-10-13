@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1V6eGXLvXwg=",
+  "dgSpecHash": "MsO3upoSDug=",
   "success": true,
-  "projectFilePath": "C:\\Users\\sotop\\OneDrive\\Escritorio\\TAREA BLAZOR\\WebEmpresa\\WebEmpresa.csproj",
+  "projectFilePath": "C:\\Users\\sotop\\Downloads\\WebEmpresa_corregido\\WebEmpresa\\WebEmpresa.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sotop\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.11\\microsoft.aspnetcore.app.internal.assets.10.0.11.nupkg.sha512"
   ],
