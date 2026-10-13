@@ -1,0 +1,288 @@
+ZAP por Informe de Escaneo Checkmarx
+Generated with The ZAP logoZAP on lun 12 oct 2026, at 22:38:20
+
+ZAP Versión: 2.17.0
+
+ZAP by Checkmarx
+
+Contents
+About This Report
+Report Parameters
+Summaries
+Alert Counts by Risk and Confidence
+Alert Counts by Site and Risk
+Alert Counts by Alert Type
+Insights
+Alerts
+Risk=Medio, Confidence=Alta (4)
+Risk=Bajo, Confidence=Media (1)
+Risk=Bajo, Confidence=Baja (1)
+Risk=Informativo, Confidence=Media (3)
+Appendix
+Alert Types
+About This Report
+Report Parameters
+Contexts
+No contexts were selected, so all contexts were included by default.
+
+Sites
+The following sites were included:
+
+http://localhost:5214
+(If no sites were selected, all sites were included by default.)
+
+An included site must also be within one of the included contexts for its data to be included in the report.
+
+Risk levels
+Included: Alto, Medio, Bajo, Informativo
+
+Excluded: None
+
+Confidence levels
+Included: Confirmado por Usuario, Alta, Media, Baja
+
+Excluded: Confirmado por Usuario, Alta, Media, Baja, Falso positivo
+
+Summaries
+Alert Counts by Risk and Confidence
+This table shows the number of alerts for each level of risk and confidence included in the report.
+
+(The percentages in brackets represent the count as a percentage of the total number of alerts included in the report, rounded to one decimal place.)
+
+Confidence
+Confirmado por Usuario	Alta	Media	Baja	Total
+Risk	Alto	0
+(0,0 %)	0
+(0,0 %)	0
+(0,0 %)	0
+(0,0 %)	0
+(0,0 %)
+Medio	0
+(0,0 %)	4
+(44,4 %)	0
+(0,0 %)	0
+(0,0 %)	4
+(44,4 %)
+Bajo	0
+(0,0 %)	0
+(0,0 %)	1
+(11,1 %)	1
+(11,1 %)	2
+(22,2 %)
+Informativo	0
+(0,0 %)	0
+(0,0 %)	3
+(33,3 %)	0
+(0,0 %)	3
+(33,3 %)
+Total	0
+(0,0 %)	4
+(44,4 %)	4
+(44,4 %)	1
+(11,1 %)	9
+(100%)
+Alert Counts by Site and Risk
+This table shows, for each site for which one or more alerts were raised, the number of alerts raised at each risk level.
+
+Alerts with a confidence level of "False Positive" have been excluded from these counts.
+
+(The numbers in brackets are the number of alerts raised for the site at or above that risk level.)
+
+Risk
+Alto
+(= Alto)	Medio
+(>= Medio)	Bajo
+(>= Bajo)	Informativo
+(>= Informativo)
+Site	http://localhost:5214	0
+(0)	4
+(4)	2
+(6)	3
+(9)
+Alert Counts by Alert Type
+This table shows the number of alerts of each alert type, together with the alert type's risk level.
+
+(The percentages in brackets represent each count as a percentage, rounded to one decimal place, of the total number of alerts included in this report.)
+
+Alert type	Risk	Count
+CSP: Directiva Wildcard	Medio	4
+(44,4 %)
+CSP: Failure to Define Directive with No Fallback	Medio	4
+(44,4 %)
+CSP: script-src unsafe-inline	Medio	4
+(44,4 %)
+CSP: style-src unsafe-inline	Medio	4
+(44,4 %)
+Divulgación de Marcas de Tiempo - Unix	Bajo	1
+(11,1 %)
+Falta encabezado X-Content-Type-Options	Bajo	5
+(55,6 %)
+Aplicación Web Moderna	Informativo	4
+(44,4 %)
+Divulgación de información - Comentarios sospechosos	Informativo	1
+(11,1 %)
+Respuesta de Gestión de Sesión Identificada	Informativo	2
+(22,2 %)
+Total		9
+Insights
+This table shows information that is likely to be very relevant to you, but which is not related to vulnerabilities, or potentially even related to the application in question.
+
+Level	Razón	Site	Descripción	Statistic
+Bajo
+Advertencia
+ZAP warnings logged - see the zap.log file for details
+13
+Información
+Informativo
+http://localhost:5214
+Percentage of responses with status code 1xx
+6 %
+Información
+Informativo
+http://localhost:5214
+Percentage of responses with status code 2xx
+71 %
+Información
+Informativo
+http://localhost:5214
+Percentage of responses with status code 4xx
+22 %
+Información
+Informativo
+http://localhost:5214
+Percentage of endpoints with content type application/json
+14 %
+Información
+Informativo
+http://localhost:5214
+Percentage of endpoints with content type image/png
+7 %
+Información
+Informativo
+http://localhost:5214
+Percentage of endpoints with content type text/css
+21 %
+Información
+Informativo
+http://localhost:5214
+Percentage of endpoints with content type text/html
+28 %
+Información
+Informativo
+http://localhost:5214
+Percentage of endpoints with content type text/javascript
+14 %
+Información
+Informativo
+http://localhost:5214
+Percentage of endpoints with method GET
+85 %
+Información
+Informativo
+http://localhost:5214
+Percentage of endpoints with method POST
+14 %
+Información
+Informativo
+http://localhost:5214
+Count of total endpoints
+14
+Información
+Informativo
+http://localhost:5214
+Percentage of slow responses
+3 %
+Alerts
+Risk=Medio, Confidence=Alta (4)
+http://localhost:5214 (4)
+CSP: Directiva Wildcard (1)
+GET http://localhost:5214/Cliente
+CSP: Failure to Define Directive with No Fallback (1)
+GET http://localhost:5214/Cliente
+CSP: script-src unsafe-inline (1)
+GET http://localhost:5214/Cliente
+CSP: style-src unsafe-inline (1)
+GET http://localhost:5214/Cliente
+Risk=Bajo, Confidence=Media (1)
+http://localhost:5214 (1)
+Falta encabezado X-Content-Type-Options (1)
+GET http://localhost:5214/Cliente
+Risk=Bajo, Confidence=Baja (1)
+http://localhost:5214 (1)
+Divulgación de Marcas de Tiempo - Unix (1)
+GET http://localhost:5214/Cliente
+Risk=Informativo, Confidence=Media (3)
+http://localhost:5214 (3)
+Aplicación Web Moderna (1)
+GET http://localhost:5214/Cliente
+Divulgación de información - Comentarios sospechosos (1)
+GET http://localhost:5214/Components/Layout/ReconnectModal.abdmv1u4y3.razor.js
+Respuesta de Gestión de Sesión Identificada (1)
+GET http://localhost:5214/Cliente
+Appendix
+Alert Types
+This section contains additional information on the types of alerts in the report.
+
+CSP: Directiva Wildcard
+Source	raised by a passive scanner (CSP)
+CWE ID	693
+WASC ID	15
+Reference	
+https://www.w3.org/TR/CSP/
+https://caniuse.com/#search=content+security+policy
+https://content-security-policy.com/
+https://github.com/HtmlUnit/htmlunit-csp
+https://web.dev/articles/csp#resource-options
+CSP: Failure to Define Directive with No Fallback
+Source	raised by a passive scanner (CSP)
+CWE ID	693
+WASC ID	15
+Reference	
+https://www.w3.org/TR/CSP/
+https://caniuse.com/#search=content+security+policy
+https://content-security-policy.com/
+https://github.com/HtmlUnit/htmlunit-csp
+https://web.dev/articles/csp#resource-options
+CSP: script-src unsafe-inline
+Source	raised by a passive scanner (CSP)
+CWE ID	693
+WASC ID	15
+Reference	
+https://www.w3.org/TR/CSP/
+https://caniuse.com/#search=content+security+policy
+https://content-security-policy.com/
+https://github.com/HtmlUnit/htmlunit-csp
+https://web.dev/articles/csp#resource-options
+CSP: style-src unsafe-inline
+Source	raised by a passive scanner (CSP)
+CWE ID	693
+WASC ID	15
+Reference	
+https://www.w3.org/TR/CSP/
+https://caniuse.com/#search=content+security+policy
+https://content-security-policy.com/
+https://github.com/HtmlUnit/htmlunit-csp
+https://web.dev/articles/csp#resource-options
+Divulgación de Marcas de Tiempo - Unix
+Source	raised by a passive scanner (Divulgación de Marcas de Tiempo)
+CWE ID	497
+WASC ID	13
+Reference	
+https://cwe.mitre.org/data/definitions/200.html
+Falta encabezado X-Content-Type-Options
+Source	raised by a passive scanner (Falta encabezado X-Content-Type-Options)
+CWE ID	693
+WASC ID	15
+Reference	
+https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)
+https://owasp.org/www-community/Security_Headers
+Aplicación Web Moderna
+Source	raised by a passive scanner (Aplicación Web Moderna)
+Divulgación de información - Comentarios sospechosos
+Source	raised by a passive scanner (Divulgación de información - Comentarios sospechosos)
+CWE ID	615
+WASC ID	13
+Respuesta de Gestión de Sesión Identificada
+Source	raised by a passive scanner (Respuesta de Gestión de Sesión Identificada)
+Reference	
+https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id/
